@@ -13,40 +13,26 @@
   <div  id="redirectBtnContainer"></div>
 
   <script>
-    // SHA-256 hash function using Web Crypto API
-    async function sha256(str) {
-      const encoder = new TextEncoder();
-      const data = encoder.encode(str);
-      const hashBuffer = await window.crypto.subtle.digest('SHA-256', data);
-      const hashArray = Array.from(new Uint8Array(hashBuffer));
-      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-    }
-
-    // Map of code hashes to URLs
-    const redirectMap = {
-      // 'hash': 'url',
-      'b1e1e2e2e2e2e2e2e2e2e2e2e2e2e2e2e2e2e2e2e2e2e2e2e2e2e2e2e2e2e2e2': 'https://wordwall.net/resource/570915/destinys-gift-vocab', // 5s8ce3
-      'b2e2e3e3e3e3e3e3e3e3e3e3e3e3e3e3e3e3e3e3e3e3e3e3e3e3e3e3e3e3e3e3': 'https://wordwall.net/resource/33311031/wilson/44-b-passage-p-124-gavins-gift-missing-word', // c2es53
-      'b3e3e4e4e4e4e4e4e4e4e4e4e4e4e4e4e4e4e4e4e4e4e4e4e4e4e4e4e4e4e4e4': 'https://wordwall.net/resource/61830735/jens-best-gift', // s8c2e3
-      'b4e4e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5': 'https://wordwall.net/resource/29559128/math/income-or-gift' // e5c283
-    };
-
-    async function checkCode() {
+    function checkCode() {
       const code = document.getElementById('codeInput').value.trim().toLowerCase();
       const messageDiv = document.getElementById('message');
       const btnContainer = document.getElementById('redirectBtnContainer');
       messageDiv.textContent = '';
       btnContainer.innerHTML = '';
 
-      // Hash the code and check
-      const codeHash = await sha256(code);
-      if (redirectMap[codeHash]) {
+      const redirectMap = {
+        "5s8ce3": "https://wordwall.net/resource/570915/destinys-gift-vocab",
+        "c2es53": "https://wordwall.net/resource/33311031/wilson/44-b-passage-p-124-gavins-gift-missing-word",
+        "s8c2e3": "https://wordwall.net/resource/61830735/jens-best-gift",
+        "e5c283": "https://wordwall.net/resource/29559128/math/income-or-gift"
+      };
+
+      if (redirectMap[code]) {
         messageDiv.textContent = '🎉 Congratulations! Your code is correct.';
-        messageDiv.style.color = '';
         const goBtn = document.createElement('button');
         goBtn.textContent = 'Follow me!';
         goBtn.onclick = function() {
-          window.location.href = redirectMap[codeHash];
+          window.location.href = redirectMap[code];
         };
         btnContainer.appendChild(goBtn);
       } else {
